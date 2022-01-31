@@ -1,0 +1,580 @@
+//</script><script type="text/babel">
+"use strict";
+let TOTAL_CELLS = 36;
+let caption = null;
+let selectedIndex = null;
+let defaultValues = [];
+let cells = [];
+let values = [];
+let sudoku = null;
+let undoes = [];
+let redoes = [];
+let puzzles = [
+    [[0,4,0,0,2,0,0,0,0,0,0,6,1,0,0,0,0,0,5,0,0,6,0,0,0,0,0,1,0,3,0,0,0,0,0,2], [3,4,6,5,2,1,2,5,1,3,4,6,1,6,4,2,3,5,5,3,2,6,1,4,4,2,5,1,6,3,6,1,3,4,5,2]],
+    [[0,3,0,5,0,0,0,0,1,0,0,0,0,0,0,0,0,0,6,0,0,0,0,4,0,0,5,0,6,0,3,0,0,0,2,0], [2,3,4,5,1,6,5,6,1,2,4,3,1,4,3,6,5,2,6,5,2,1,3,4,4,2,5,3,6,1,3,1,6,4,2,5]],
+    [[4,0,0,0,0,1,0,0,0,0,2,0,3,0,0,0,0,0,0,0,0,6,0,0,5,0,0,3,0,0,0,0,0,0,0,5], [4,2,6,5,3,1,1,5,3,4,2,6,3,6,1,2,5,4,2,4,5,6,1,3,5,1,4,3,6,2,6,3,2,1,4,5]],
+    [[0,0,0,0,0,6,0,0,0,0,0,0,0,3,0,0,0,0,2,0,4,0,0,1,5,0,0,0,0,2,0,0,0,0,0,0], [4,5,3,2,1,6,6,2,1,4,5,3,1,3,5,6,2,4,2,6,4,5,3,1,5,1,6,3,4,2,3,4,2,1,6,5]],
+    [[0,0,0,0,0,0,0,3,0,2,4,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,5], [2,6,4,1,5,3,1,3,5,2,4,6,5,4,3,6,2,1,6,1,2,5,3,4,3,5,1,4,6,2,4,2,6,3,1,5]],
+    [[0,3,0,0,1,0,5,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,3,0,6,0,0,0,0,5,0,4], [2,3,6,4,1,5,5,4,1,3,2,6,1,6,5,2,4,3,3,2,4,6,5,1,4,5,3,1,6,2,6,1,2,5,3,4]],
+    [[0,0,0,0,0,0,0,0,4,0,0,2,0,0,0,0,0,0,0,2,0,0,0,0,1,5,0,0,0,4,0,3,0,0,5,0], [2,6,3,5,4,1,5,1,4,6,3,2,3,4,1,2,6,5,6,2,5,4,1,3,1,5,6,3,2,4,4,3,2,1,5,6]],
+    [[0,0,0,0,5,3,0,0,0,0,2,0,0,0,2,0,0,0,5,0,0,0,0,0,3,0,1,0,0,0,0,2,0,6,0,0], [2,4,6,1,5,3,1,5,3,4,2,6,6,3,2,5,1,4,5,1,4,3,6,2,3,6,1,2,4,5,4,2,5,6,3,1]],
+    [[0,0,0,5,0,0,0,0,0,0,0,6,0,0,1,0,0,0,0,0,5,0,0,0,6,1,0,0,0,2,0,0,0,0,3,0], [1,2,6,5,4,3,3,5,4,2,1,6,4,6,1,3,2,5,2,3,5,1,6,4,6,1,3,4,5,2,5,4,2,6,3,1]],
+    [[0,0,0,0,2,0,6,0,0,0,0,0,4,0,0,3,0,0,0,0,0,0,0,4,0,5,1,0,0,0,0,0,0,0,0,1], [5,1,4,6,2,3,6,3,2,1,4,5,4,2,5,3,1,6,1,6,3,2,5,4,3,5,1,4,6,2,2,4,6,5,3,1]],
+    [[0,2,0,0,0,0,0,0,0,0,0,1,0,0,5,6,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,1,0,0,2,3], [5,2,1,4,3,6,6,4,3,2,5,1,1,3,5,6,4,2,2,6,4,3,1,5,3,5,2,1,6,4,4,1,6,5,2,3]],
+    [[0,6,0,0,1,0,0,2,0,0,0,0,0,0,0,0,0,5,0,0,0,3,0,0,2,0,0,0,4,0,0,0,6,0,0,0], [4,6,3,5,1,2,5,2,1,6,3,4,3,1,2,4,6,5,6,5,4,3,2,1,2,3,5,1,4,6,1,4,6,2,5,3]],
+    [[0,0,0,0,1,0,0,5,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,3,2,0,5,0,0,0,0,1,0,2,0,0], [4,3,6,5,1,2,1,5,2,4,3,6,6,2,3,1,5,4,5,4,1,6,2,3,2,6,5,3,4,1,3,1,4,2,6,5]],
+    [[4,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,5,0,3,0,0,0,0,1,0,0,0,0,0,0,0,0,0,6,2], [4,5,2,3,1,6,3,6,1,5,2,4,2,1,4,6,3,5,6,3,5,2,4,1,1,2,6,4,5,3,5,4,3,1,6,2]],
+    [[0,0,0,0,3,0,0,0,0,4,0,0,0,0,5,0,0,4,6,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,6,1], [4,6,2,1,3,5,5,1,3,4,2,6,2,3,5,6,1,4,6,4,1,3,5,2,1,2,6,5,4,3,3,5,4,2,6,1]],
+    [[0,0,0,0,0,0,0,0,0,1,4,0,0,5,0,0,0,6,0,0,0,4,0,3,0,1,6,5,0,0,0,0,0,0,0,0], [1,2,4,6,3,5,6,3,5,1,4,2,4,5,3,2,1,6,2,6,1,4,5,3,3,1,6,5,2,4,5,4,2,3,6,1]],
+    [[6,0,5,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,4,0,0,3,5,0,0,0,0,0,0], [6,3,5,2,4,1,1,2,4,3,5,6,4,5,6,1,2,3,3,1,2,5,6,4,2,4,1,6,3,5,5,6,3,4,1,2]],
+    [[0,3,0,0,0,0,2,0,0,0,4,6,0,0,0,0,1,0,0,0,0,0,0,5,0,4,6,0,0,0,0,0,3,0,0,0], [6,3,4,1,5,2,2,1,5,3,4,6,4,5,2,6,1,3,3,6,1,4,2,5,5,4,6,2,3,1,1,2,3,5,6,4]],
+    [[0,2,0,0,0,0,0,0,0,0,4,0,0,0,4,0,3,0,0,1,2,0,0,0,0,5,0,0,0,0,0,0,0,6,1,0], [4,2,6,3,5,1,1,3,5,2,4,6,5,6,4,1,3,2,3,1,2,5,6,4,6,5,1,4,2,3,2,4,3,6,1,5]],
+    [[0,4,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,5,0,0,0,2,0,0,0,0,5,0,0,2,0,1,4,0], [2,4,1,6,3,5,5,6,3,4,2,1,1,3,2,5,6,4,6,5,4,3,1,2,4,1,6,2,5,3,3,2,5,1,4,6]],
+    [[0,0,0,0,0,0,0,0,0,1,5,0,3,0,2,0,0,1,0,1,0,0,2,0,0,0,0,0,0,0,0,6,0,4,0,0], [1,5,3,6,4,2,6,2,4,1,5,3,3,4,2,5,6,1,5,1,6,3,2,4,4,3,5,2,1,6,2,6,1,4,3,5]]
+];
+let verbose = false;
+let w;
+
+const showLog = l => {
+    if (verbose) {
+        console.log(l);
+    }
+}
+
+class Sudoku {
+    constructor(values) {
+        this.values = values;
+        this._values = [];
+        this.possible = [
+            [],
+            [],
+            [],
+            [],
+            [],
+            []
+        ];
+        this.actual = [
+            [],
+            [],
+            [],
+            [],
+            [],
+            []
+        ];
+    }
+}
+
+const select = index => {
+    if (selectedIndex !== index) {
+        if (cells[index].innerText) {
+            let conflict = false;
+            for (let i = 0; i < cells.length; i++) {
+                if (i !== index) {
+                    if (sudoku.sameRow(i, index) || sudoku.sameCol(i, index) || sudoku.sameBlock(i, index)) {
+                        if (cells[i].innerText === cells[index].innerText) {
+                            cells[index].style.backgroundColor = "green";
+                            conflict = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!conflict) {
+                cells[index].style.backgroundColor = "green";
+            }
+        } else {
+            cells[index].style.backgroundColor = "green";
+        }
+        if (selectedIndex !== null) {
+            cells[selectedIndex].style.backgroundColor = "white";
+        }
+        selectedIndex = index;
+    }
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        if (index !== null && (cells[index].style.fontWeight === 'normal' || isCleared())) {
+            let num = prompt("Please enter an integer between 0 and 6", cells[selectedIndex].innerText);
+            if (num !== null) {
+                num = num.replace(/\s/g, "");
+                if (num === '') {
+                    num = '0';
+                }
+                if ('0123456'.indexOf(num) > -1) {
+                    update(parseInt(num) + 48, selectedIndex);
+                }
+            }
+        }
+    }
+}
+
+const normalize = n => {
+    return n > 6 ? "" + n : "0" + n;
+}
+
+const recordChange = (index, oldValue, newValue) => {
+    if (newValue !== oldValue) {
+        undoes.push(`${normalize(index)}${normalize(oldValue)}${normalize(newValue)}`);
+    }
+}
+
+const isCleared = () => {
+    for (let i = 0; i < cells.length; i++) {
+        if (cells[i].style.fontWeight === "normal") {
+            return false;
+        }
+    }
+    return true;
+}
+const update = (keyCode, index, record = true) => {
+    if (index === null || (cells[index].style.fontWeight === 'bold' && !isCleared())) {
+        return;
+    }keyCode
+    let solved = false;
+    if (selectedIndex !== null) {
+        cells[selectedIndex].backgroundColor = "white";
+    }
+    cells[index].backgroundColor = "white";
+    switch (keyCode) {
+        case 48:
+        case 96:
+        case 46:
+        case 8:
+            if (record) {
+                recordChange(index, sudoku.values[index], 0);
+                cells[index].style.backgroundColor = "green";
+            } else {
+                cells[index].style.backgroundColor = "white";
+                selectedIndex = null;
+            }
+            cells[index].innerText = "";
+            sudoku.values[index] = 0;
+            caption.innerText = '(2,3)-Sudoku Pair Puzzle';
+            return;
+        case 49:
+        case 97:
+            if (record) {
+                recordChange(index, sudoku.values[index], 1);
+            }
+            cells[index].innerText = "1";
+            sudoku.values[index] = 1;
+            break;
+        case 50:
+        case 98:
+            if (record) {
+                recordChange(index, sudoku.values[index], 2);
+            }
+            cells[index].innerText = "2";
+            sudoku.values[index] = 2;
+            break;
+        case 51:
+        case 99:
+            if (record) {
+                recordChange(index, sudoku.values[index], 3);
+            }
+            cells[index].innerText = "3";
+            sudoku.values[index] = 3;
+            break;
+        case 52:
+        case 100:
+            if (record) {
+                recordChange(index, sudoku.values[index], 4);
+            }
+            cells[index].innerText = "4";
+            sudoku.values[index] = 4;
+            break;
+        case 53:
+        case 101:
+            if (record) {
+                recordChange(index, sudoku.values[index], 5);
+            }
+            cells[index].innerText = "5";
+            sudoku.values[index] = 5;
+            break;
+        case 54:
+        case 102:
+            if (record) {
+                recordChange(index, sudoku.values[index], 6);
+            }
+            cells[index].innerText = "6";
+            sudoku.values[index] = 6;
+            break;
+        case 55:
+
+        case 56:
+
+        case 57:
+            
+        default:
+            return;
+    }
+    if (record) {
+        let conflict = false;
+        let finished = true;
+        for (let i = 0; i < cells.length; i++) {
+            if (!cells[i].innerText || '123456'.indexOf(cells[i].innerText) === -1) {
+                finished = false;
+            }
+            if (i !== index) {
+                if (sudoku.sameRow(i, index) || sudoku.sameCol(i, index) || sudoku.sameBlock(i, index)) {
+                    if (cells[i].innerText === cells[index].innerText) {
+                        cells[index].style.backgroundColor = "green";
+                        conflict = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!conflict) {
+            if (finished) {
+                solved = true;
+                for (let i = 0; i < cells.length; i++) {
+                    if (!solved) {
+                        break;
+                    }
+                    for (let j = 0; j < cells.length; j++) {
+                        if (i != j) {
+                            if (sudoku.sameRow(i, j) || sudoku.sameCol(i, j) || sudoku.sameBlock(i, j)) {
+                                if (sudoku.values[i] === sudoku.values[j]) {
+                                    solved = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (solved) {
+                    caption.innerText = '(2,3)-Sudoku Pair Puzzle Solved.'
+                    cells[index].style.backgroundColor = "green";
+                }
+            } else {
+                cells[index].style.backgroundColor = "green";
+            }
+        }
+    } else {
+        cells[index].style.backgroundColor = "white";
+        selectedIndex = null;
+    }
+    if (!solved) {
+        caption.innerText = '(2,3)-Sudoku Pair Puzzle';
+    }
+}
+
+const clear = () => {
+    for (let i = 0; i < cells.length; i++) {
+        sudoku.values[i] = 0;
+        cells[i].innerText = '';
+        cells[i].style.fontWeight = "bold";
+    }
+    if (selectedIndex !== null) {
+        cells[selectedIndex].style.backgroundColor = "white";
+    }
+    selectedIndex = null;
+    caption.innerText = "(2,3)-Sudoku Pair Puzzle";
+    defaultValues = [];
+    undoes = [];
+    redoes = [];
+}
+
+const reset = () => {
+    puzzle = puzzles[puzzleindex][0];
+    answer = puzzles[puzzleindex][1];
+    if (defaultValues.length > 0) {
+        for (let i = 0; i < defaultValues.length; i++) {
+            if (defaultValues[i]) {
+                cells[i].innerText = defaultValues[i];
+                cells[i].style.fontWeight = "bold";
+            } else {
+                cells[i].innerText = '';
+                cells[i].style.fontWeight = "normal";
+            }
+            sudoku.values[i] = defaultValues[i];
+        }
+        if (selectedIndex !== null) {
+            cells[selectedIndex].style.backgroundColor = "white";
+        }
+        selectedIndex = null;
+        caption.innerText = "(2,3)-Sudoku Pair Puzzle";
+    } else {
+        clear();
+    }
+    undoes = [];
+    redoes = [];
+}
+
+const loadString = s => {
+    let content = s.replace(/\s/g, "");
+    let values = [];
+    let isBold = true;
+    for (let i = 0; i < content.length; i++) {
+        if ('1234560.*'.indexOf(content[i] > -1)) {
+            if (values.length === cells.length)
+                break;
+            switch (content[i]) {
+                case '0':
+                case '.':
+                    values.push(0);
+                    isBold = true;
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                    if (isBold) {
+                        values.push(parseInt(content[i]));
+                    } else {
+                        values.push(parseInt(content[i]) * -1);
+                        isBold = true;
+                    }
+                    break;
+                case '*':
+                    isBold = false;
+                    break;
+                default:
+                    alert("The file format is incorrect.");
+                    return;
+            }
+        } else {
+            alert("The file format is incorrect.");
+            return;
+        }
+    }
+    for (let i = 0; i < values.length; i++) {
+        if (i === cells.length)
+            break;
+        sudoku.values[i] = Math.abs(values[i])
+        if (values[i] > 0) {
+            cells[i].style.fontWeight = "bold";
+            defaultValues[i] = sudoku.values[i];
+        } else {
+            cells[i].style.fontWeight = "normal";
+            defaultValues[i] = 0;
+        }
+        cells[i].style.backgroundColor = "white";
+        if (sudoku.values[i]) {
+            cells[i].innerText = sudoku.values[i];
+        } else {
+            cells[i].innerText = '';
+        }
+    }
+    if (values.length < cells.length) {
+        for (let i = values.length; i < cells.length; i++) {
+            cells[i].style.fontWeight = "normal";
+            sudoku.values[i] = 0;
+            defaultValues[i] = 0;
+            cells[i].innerText = '';
+        }
+    }
+    undoes = [];
+    redoes = [];
+    caption.innerText = '(2,3)-Sudoku Pair Puzzle';
+}
+
+const undo = () => {
+    if (undoes.length > 0) {
+        let change = undoes[undoes.length - 1];
+        let index = parseInt(change.slice(0, 2));
+        let oldValue = parseInt(change.slice(2, 4));
+        redoes.push(undoes.pop());
+        update(48 + oldValue, index, false);
+    }
+    for (let i = 0; i < cells.length; i++) {
+        if (cells[i].style.backgroundColor !== "white") {
+            cells[i].style.backgroundColor = "white";
+        }
+        selectedIndex = null;
+    }
+}
+
+const redo = () => {
+    if (redoes.length > 0) {
+        let change = redoes[redoes.length - 1];
+        let index = parseInt(change.slice(0, 2));
+        let oldValue = parseInt(change.slice(4, 6));
+        undoes.push(redoes.pop());
+        update(48 + oldValue, index, false);
+    }
+    for (let i = 0; i < cells.length; i++) {
+        if (cells[i].style.backgroundColor !== "white") {
+            cells[i].style.backgroundColor = "white";
+        }
+        selectedIndex = null;
+    }
+}
+
+const genModifiedPuzzles = () => {
+    //create new puzzles by modifying existing puzzles
+    let mtx = [
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+    ];
+    let arr = [];
+    let s = '';
+    let arr2 = new Array(TOTAL_CELLS);
+    for (let i = 0; i < puzzles.length; i++) {
+        s = puzzles[i];
+        // s = s.split("").reverse().join("");
+        if (puzzles.indexOf(s) === -1) {
+            puzzles.push(s);
+        }
+        sudoku.string2Array(puzzles[i], arr);
+        sudoku.array2Matrix(arr, mtx);
+        let mtx2 = sudoku.transposeArray(mtx, mtx.length);
+        sudoku.matrix2Array(mtx2, arr2);
+        s = sudoku.array2String(arr2);
+        if (puzzles.indexOf(s) === -1) {
+            puzzles.push(s);
+        }
+        mtx2 = [
+            mtx[6], mtx[7], mtx[8],
+            mtx[3], mtx[4], mtx[5],
+            mtx[0], mtx[1], mtx[2]
+        ];
+        sudoku.matrix2Array(mtx2, arr2);
+        s = sudoku.array2String(arr2);
+        if (puzzles.indexOf(s) === -1) {
+            puzzles.push(s);
+        }
+    }
+}
+
+const newSudoku = () => {
+    let puzzle = [];
+    let str = saveString();
+    str = str.replace(/\*\d/g, '.').replace(/\s/g, '');
+    let currentIndex = puzzles.indexOf(str);
+    let currentPuzzle = '';
+
+    let puzzleindex = Math.round(Math.random(0, 1) * (puzzles.length - 1))
+    while (puzzleindex === currentIndex) {
+        puzzleindex = Math.round(Math.random(0, 1) * (puzzles.length - 1))
+    }
+    puzzle = puzzles[puzzleindex][0];
+    answer = puzzles[puzzleindex][1];
+    loadString(puzzle);
+    if (currentPuzzle !== '') {
+        puzzles.push(currentPuzzle);
+    }
+}
+
+window.onload = () => {
+    let table = document.getElementsByTagName("table")[0];
+    let solveButton = document.getElementById('btnSolve');
+    // let clearButton = document.getElementById('btnClear');
+    // let resetButton = document.getElementById('btnReset');
+    // let loadButton = document.getElementById('btnLoad');
+    // let saveButton = document.getElementById('btnSave');
+    let undoButton = document.getElementById('btnUndo');
+    let redoButton = document.getElementById('btnRedo');
+    let newButton = document.getElementById('btnNew');
+    let checkButton = document.getElementById('btnCheck');
+    let tbodies = table.getElementsByTagName("tbody");
+    caption = table.getElementsByTagName("caption")[0];
+    
+    sudoku = new Sudoku(values);
+    // genModifiedPuzzles();
+    let puzzleindex = Math.round((Math.random(0, 1) * (puzzles.length - 1)))
+    let vals = puzzles[puzzleindex][0];
+    let answer = puzzles[puzzleindex][1];
+    let index = 0;
+    
+    for (let tbody of tbodies) {
+        let trs = tbody.getElementsByTagName("tr");
+        for (let tr of trs) {
+            let tds = tr.getElementsByTagName("td");
+            for (let td of tds) {
+                if ('123456'.indexOf(vals[index]) > -1) {
+                    td.innerText = vals[index];
+                    td.style.fontWeight = "bold";
+                    values.push(parseInt(td.innerText));
+                    defaultValues.push(parseInt(td.innerText));
+                } else {
+                    td.innerText = '';
+                    td.style.fontWeight = "normal";
+                    values.push(0);
+                    defaultValues.push(0);
+                }
+                cells.push(td);
+                index++;
+            }
+        }
+    }
+
+    index = 0
+    solveButton.onclick = () => {
+        index = 0
+        for (let tbody of tbodies) {
+            let trs = tbody.getElementsByTagName("tr");
+            for (let tr of trs) {
+                let tds = tr.getElementsByTagName("td");
+                for (let td of tds) {
+                    if ('123456'.indexOf(vals[index]) > -1) {
+                        td.innerText = vals[index];
+                        td.style.fontWeight = "bold";
+                        values.push(parseInt(td.innerText));
+                        defaultValues.push(parseInt(td.innerText));
+                    } else {
+                        td.innerText = answer[index];
+                        td.style.fontWeight = "normal";
+                        values.push(parseInt(td.innerText));
+                        defaultValues.push(parseInt(td.innerText));
+                    }
+                    cells.push(td);
+                    index++;
+                }
+            }
+        }
+    }
+
+    checkButton.onclick = () => {
+        let index = 0;
+        let ProblemFlag = 0;
+        for (let tbody of tbodies) {
+            let trs = tbody.getElementsByTagName("tr");
+            for (let tr of trs) {
+                let tds = tr.getElementsByTagName("td");
+                for (let td of tds) {
+                    // alert(vals[index]);
+                    if (vals[index] !== answer[index]) {
+                        ProblemFlag = 1;
+                    }
+                    cells.push(td);
+                    index++;
+                }
+            }
+        }
+        if (ProblemFlag === 1) {
+            alert("You have one or more mistake in this puzzle.");
+        } else {
+            alert("Congratulations!");
+        }
+        ProblemFlag = 0;
+    }
+
+    undoButton.onclick = () => {
+        undo();
+    }
+    redoButton.onclick = () => {
+        redo();
+    }
+    newButton.onclick = () => {
+        location.reload(); 
+    }
+    for (let i = 0; i < cells.length; i++)
+        cells[i].onclick = () => {
+            select(i);
+        }
+
+    document.addEventListener('keydown', (event) => {
+        if ((event.keyCode >= 48 && event.keyCode <= 54) ||
+            (event.keyCode >= 96 && event.keyCode <= 102) ||
+            event.keyCode == 46 || event.keyCode == 8) { //0-6,del,backspace
+            update(event.keyCode, selectedIndex);
+        }
+    });
+    caption.innerText = "(2,3)-Sudoku Pair Puzzle";
+}

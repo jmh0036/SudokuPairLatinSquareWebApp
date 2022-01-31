@@ -1,0 +1,72 @@
+body {
+    margin: auto;
+    width: 90%;
+    padding: 10px;
+    height: 420px;
+    position: relative;
+}
+
+#game {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+/* #btnLoad, */
+/* #btnSave, */
+/* #btnReset, */
+#btnSolve,
+/* #btnClear, */
+#btnNew,
+#btnUndo,
+#btnCheck,
+#btnRedo {
+    margin: 5px;
+}
+
+table {
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    /* font-size: 1.1em; */
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: auto;
+}
+
+caption {
+    font-weight: normal;
+}
+
+colgroup,
+tbody {
+    border: solid medium;
+}
+
+td {
+    border: solid thin;
+    height: 1.2em;
+    width: 1.2em;
+    text-align: center;
+    padding: 0;
+}
+
+.dash {
+    border: dashed medium;
+}
+
+@keyframes choose {
+    from {
+        background: #ffd;
+    }
+    
+    to {
+        background: #400;
+    }
+}
