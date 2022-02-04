@@ -255,53 +255,9 @@ const redo = () => {
     }
 }
 
-const genModifiedPuzzles = () => {
-    //create new puzzles by modifying existing puzzles
-    let mtx = [
-        [],
-        [],
-        [],
-        [],
-        [],
-        []
-    ];
-    let arr = [];
-    let s = '';
-    let arr2 = new Array(TOTAL_CELLS);
-    for (let i = 0; i < puzzles.length; i++) {
-        s = puzzles[i];
-        // s = s.split("").reverse().join("");
-        if (puzzles.indexOf(s) === -1) {
-            puzzles.push(s);
-        }
-        sudoku.string2Array(puzzles[i], arr);
-        sudoku.array2Matrix(arr, mtx);
-        let mtx2 = sudoku.transposeArray(mtx, mtx.length);
-        sudoku.matrix2Array(mtx2, arr2);
-        s = sudoku.array2String(arr2);
-        if (puzzles.indexOf(s) === -1) {
-            puzzles.push(s);
-        }
-        mtx2 = [
-            mtx[6], mtx[7], mtx[8],
-            mtx[3], mtx[4], mtx[5],
-            mtx[0], mtx[1], mtx[2]
-        ];
-        sudoku.matrix2Array(mtx2, arr2);
-        s = sudoku.array2String(arr2);
-        if (puzzles.indexOf(s) === -1) {
-            puzzles.push(s);
-        }
-    }
-}
-
 window.onload = () => {
     let table = document.getElementsByTagName("table")[0];
     let solveButton = document.getElementById('btnSolve');
-    // let clearButton = document.getElementById('btnClear');
-    // let resetButton = document.getElementById('btnReset');
-    // let loadButton = document.getElementById('btnLoad');
-    // let saveButton = document.getElementById('btnSave');
     let undoButton = document.getElementById('btnUndo');
     let redoButton = document.getElementById('btnRedo');
     let newButton = document.getElementById('btnNew');
@@ -310,7 +266,6 @@ window.onload = () => {
     caption = table.getElementsByTagName("caption")[0];
     
     sudoku = new Sudoku(values);
-    // genModifiedPuzzles();
     let puzzleindex = Math.round((Math.random(0, 1) * (puzzles.length - 1)))
     let vals = puzzles[puzzleindex][0];
     let answer = puzzles[puzzleindex][1];
@@ -357,7 +312,6 @@ window.onload = () => {
                         values.push(parseInt(td.innerText));
                         defaultValues.push(parseInt(td.innerText));
                     }
-                    // cells.push(td);
                     index++;
                 }
             }
@@ -373,8 +327,6 @@ window.onload = () => {
                 let tds = tr.getElementsByTagName("td");
                 for (let td of tds) {
                     cells.push(td);
-                    // vals.push(td);
-                    // alert(vals[index]);
                     if (sudoku.values[index] !== answer[index]) {
                         ProblemFlag = 1;
                     }
