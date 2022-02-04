@@ -69,13 +69,3 @@ td {
 .dash {
     border: dashed medium;
 }
-
-@keyframes choose {
-    from {
-        background: #ffd;
-    }
-    
-    to {
-        background: #400;
-    }
-}
