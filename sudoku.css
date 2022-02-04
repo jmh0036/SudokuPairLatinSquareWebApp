@@ -19,11 +19,20 @@ body {
     transform: translate(-50%, -50%);
 }
 
-/* #btnLoad, */
-/* #btnSave, */
-/* #btnReset, */
+#btn1,
+#btn2,
+#btn3,
+#btn4,
+#btn5,
+#btn6 {
+    margin: 2px;
+}
+
+#btnLoad,
+#btnSave,
+#btnReset,
 #btnSolve,
-/* #btnClear, */
+#btnClear,
 #btnNew,
 #btnUndo,
 #btnCheck,

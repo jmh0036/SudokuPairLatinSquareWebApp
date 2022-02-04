@@ -68,17 +68,6 @@ const select = index => {
     if (selectedIndex !== index) {
         if (cells[index].innerText) {
             let conflict = false;
-            for (let i = 0; i < cells.length; i++) {
-                if (i !== index) {
-                    if (sudoku.sameRow(i, index) || sudoku.sameCol(i, index) || sudoku.sameBlock(i, index)) {
-                        if (cells[i].innerText === cells[index].innerText) {
-                            cells[index].style.backgroundColor = "green";
-                            conflict = true;
-                            break;
-                        }
-                    }
-                }
-            }
             if (!conflict) {
                 cells[index].style.backgroundColor = "green";
             }
@@ -223,38 +212,14 @@ const update = (keyCode, index, record = true) => {
                 }
             }
         }
-        if (!conflict) {
-            if (finished) {
-                solved = true;
-                for (let i = 0; i < cells.length; i++) {
-                    if (!solved) {
-                        break;
-                    }
-                    for (let j = 0; j < cells.length; j++) {
-                        if (i != j) {
-                            if (sudoku.sameRow(i, j) || sudoku.sameCol(i, j) || sudoku.sameBlock(i, j)) {
-                                if (sudoku.values[i] === sudoku.values[j]) {
-                                    solved = false;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                if (solved) {
-                    caption.innerText = '(2,3)-Sudoku Pair Puzzle Solved.'
-                    cells[index].style.backgroundColor = "green";
-                }
-            } else {
-                cells[index].style.backgroundColor = "green";
-            }
-        }
     } else {
         cells[index].style.backgroundColor = "white";
         selectedIndex = null;
     }
     if (!solved) {
         caption.innerText = '(2,3)-Sudoku Pair Puzzle';
+    } else {
+        caption.innerText = 'Congratulations! You did it.'
     }
 }
 
@@ -523,7 +488,7 @@ window.onload = () => {
                         values.push(parseInt(td.innerText));
                         defaultValues.push(parseInt(td.innerText));
                     }
-                    cells.push(td);
+                    // cells.push(td);
                     index++;
                 }
             }
@@ -538,19 +503,21 @@ window.onload = () => {
             for (let tr of trs) {
                 let tds = tr.getElementsByTagName("td");
                 for (let td of tds) {
+                    cells.push(td);
+                    // vals.push(td);
                     // alert(vals[index]);
-                    if (vals[index] !== answer[index]) {
+                    if (sudoku.values[index] !== answer[index]) {
                         ProblemFlag = 1;
                     }
-                    cells.push(td);
                     index++;
                 }
             }
         }
+
         if (ProblemFlag === 1) {
             alert("You have one or more mistake in this puzzle.");
         } else {
-            alert("Congratulations!");
+            alert("Congratulations! You did it.");
         }
         ProblemFlag = 0;
     }
@@ -577,4 +544,28 @@ window.onload = () => {
         }
     });
     caption.innerText = "(2,3)-Sudoku Pair Puzzle";
+
+    btn1.onclick = () => {
+        update(1 + 48, selectedIndex);
+    }
+
+    btn2.onclick = () => {
+        update(2 + 48, selectedIndex);
+    }
+
+    btn3.onclick = () => {
+        update(3 + 48, selectedIndex);
+    }
+
+    btn4.onclick = () => {
+        update(4 + 48, selectedIndex);
+    }
+
+    btn5.onclick = () => {
+        update(5 + 48, selectedIndex);
+    }
+
+    btn6.onclick = () => {
+        update(6 + 48, selectedIndex);
+    }
 }
