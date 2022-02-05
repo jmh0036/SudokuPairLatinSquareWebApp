@@ -79,20 +79,6 @@ const select = index => {
         }
         selectedIndex = index;
     }
-    // if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-    //     if (index !== null && (cells[index].style.fontWeight === 'normal' || isCleared())) {
-    //         let num = prompt("Please enter an integer between 0 and 6", cells[selectedIndex].innerText);
-    //         if (num !== null) {
-    //             num = num.replace(/\s/g, "");
-    //             if (num === '') {
-    //                 num = '0';
-    //             }
-    //             if ('0123456'.indexOf(num) > -1) {
-    //                 update(parseInt(num) + 48, selectedIndex);
-    //             }
-    //         }
-    //     }
-    // }
 }
 
 const normalize = n => {
