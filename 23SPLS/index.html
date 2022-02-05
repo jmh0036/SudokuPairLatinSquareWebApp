@@ -6,12 +6,12 @@
     <meta charset="utf-8">
     <title>(2,3)-Sudoku Pair Puzzle</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="sudoku.css">
+    <link rel="stylesheet" href="23sudoku.css">
 </head>
 
 <body>
     <div id="game">
-        <table>
+        <table class="demoWrapper">
             <caption>Loading...</caption>
             <colgroup>
                 <col>
@@ -100,14 +100,20 @@
 
         <br />
 
-        <input type="button" id='btnUndo' value="Undo" />
-        <input type="button" id='btnRedo' value="Redo" />
-        <input type="button" id='btnSolve' value="Solve" /><br />
-        <input type="button" id='btnNew' value="New" />
         <input type="button" id='btnCheck' value="Check" />
-    </div>
+        <input type="button" id='btnSolve' value="Solve" />
+        <input type="button" id='btnNew' value="New" />
 
-    
+        <br />
+
+        <h2>Rules:</h2>
+        <ul>
+            <li>Every row must have integers 1 through 6 exactly once</li>
+            <li>Each bold 2 by 3 rectangle must have integers 1 through 6 exactly once</li>
+            <li>Each dotted 3 by 2 rectangle must have integers 1 through 6 exactly once</li>
+        </ul> 
+        <br />
+    </div>
     
      <script src="23SPLS.js"></script>
      <script src='23SPLS.js'></script>

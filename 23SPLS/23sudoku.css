@@ -8,8 +8,8 @@ body {
 
 #game {
     margin: 0;
-    position: absolute;
-    top: 50%;
+    position: relative;
+    top: 90%;
     left: 50%;
     text-align: center;
     -o-transform: translate(-50%, -50%);
@@ -26,6 +26,7 @@ body {
 #btn5,
 #btn6 {
     margin: 2px;
+    font-size: 1.5em;
 }
 
 #btnLoad,
@@ -38,13 +39,14 @@ body {
 #btnCheck,
 #btnRedo {
     margin: 5px;
+    font-size: 1.5em;
 }
 
 table {
     border-collapse: collapse;
     font-family: Arial, sans-serif;
     /* font-size: 1.1em; */
-    font-size: 1.5em;
+    font-size: 1.75em;
     font-weight: bold;
     margin: auto;
 }
@@ -60,8 +62,8 @@ tbody {
 
 td {
     border: solid thin;
-    height: 1.2em;
-    width: 1.2em;
+    height: 1.75em;
+    width: 1.75em;
     text-align: center;
     padding: 0;
 }
