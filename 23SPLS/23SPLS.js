@@ -209,37 +209,37 @@ const update = (keyCode, index, record = true) => {
     }
 }
 
-// const undo = () => {
-//     if (undoes.length > 0) {
-//         let change = undoes[undoes.length - 1];
-//         let index = parseInt(change.slice(0, 2));
-//         let oldValue = parseInt(change.slice(2, 4));
-//         redoes.push(undoes.pop());
-//         update(48 + oldValue, index, false);
-//     }
-//     for (let i = 0; i < cells.length; i++) {
-//         if (cells[i].style.backgroundColor !== "white") {
-//             cells[i].style.backgroundColor = "white";
-//         }
-//         selectedIndex = null;
-//     }
-// }
+const undo = () => {
+    if (undoes.length > 0) {
+        let change = undoes[undoes.length - 1];
+        let index = parseInt(change.slice(0, 2));
+        let oldValue = parseInt(change.slice(2, 4));
+        redoes.push(undoes.pop());
+        update(48 + oldValue, index, false);
+    }
+    for (let i = 0; i < cells.length; i++) {
+        if (cells[i].style.backgroundColor !== "white") {
+            cells[i].style.backgroundColor = "white";
+        }
+        selectedIndex = null;
+    }
+}
 
-// const redo = () => {
-//     if (redoes.length > 0) {
-//         let change = redoes[redoes.length - 1];
-//         let index = parseInt(change.slice(0, 2));
-//         let oldValue = parseInt(change.slice(4, 6));
-//         undoes.push(redoes.pop());
-//         update(48 + oldValue, index, false);
-//     }
-//     for (let i = 0; i < cells.length; i++) {
-//         if (cells[i].style.backgroundColor !== "white") {
-//             cells[i].style.backgroundColor = "white";
-//         }
-//         selectedIndex = null;
-//     }
-// }
+const redo = () => {
+    if (redoes.length > 0) {
+        let change = redoes[redoes.length - 1];
+        let index = parseInt(change.slice(0, 2));
+        let oldValue = parseInt(change.slice(4, 6));
+        undoes.push(redoes.pop());
+        update(48 + oldValue, index, false);
+    }
+    for (let i = 0; i < cells.length; i++) {
+        if (cells[i].style.backgroundColor !== "white") {
+            cells[i].style.backgroundColor = "white";
+        }
+        selectedIndex = null;
+    }
+}
 
 window.onload = () => {
     let table = document.getElementsByTagName("table")[0];
@@ -248,6 +248,7 @@ window.onload = () => {
     let redoButton = document.getElementById('btnRedo');
     let newButton = document.getElementById('btnNew');
     let checkButton = document.getElementById('btnCheck');
+    // let clearButton = document.getElementById('btnClear');
     let tbodies = table.getElementsByTagName("tbody");
     caption = table.getElementsByTagName("caption")[0];
     
@@ -324,20 +325,43 @@ window.onload = () => {
         if (ProblemFlag === 1) {
             alert("You have one or more mistake in this puzzle.");
         } else {
-            alert("Congratulations! You did it.");
+            alert("Congratulations! Wanna try another one?!");
         }
         ProblemFlag = 0;
     }
 
-    // undoButton.onclick = () => {
-    //     undo();
-    // }
-    // redoButton.onclick = () => {
-    //     redo();
-    // }
+    undoButton.onclick = () => {
+        undo();
+    }
+    redoButton.onclick = () => {
+        redo();
+    }
     newButton.onclick = () => {
         location.reload(); 
     }
+
+    // clearButton.onclick = () => {
+    //     for (let tbody of tbodies) {
+    //         let trs = tbody.getElementsByTagName("tr");
+    //         for (let tr of trs) {
+    //             let tds = tr.getElementsByTagName("td");
+    //             for (let td of tds) {
+    //                 if ('123456'.indexOf(vals[index]) > -1) {
+    //                     td.innerText = vals[index];
+    //                     td.style.fontWeight = "bold";
+    //                     values.push(parseInt(td.innerText));
+    //                     defaultValues.push(parseInt(td.innerText));
+    //                 } else {
+    //                     update(0 + 48, selectedIndex);
+    //                 }
+    //                 cells.push(td);
+    //                 index++;
+    //             }
+    //         }
+    //     }
+    // }
+
+
     for (let i = 0; i < cells.length; i++)
         cells[i].onclick = () => {
             select(i);
@@ -351,6 +375,10 @@ window.onload = () => {
         }
     });
     caption.innerText = "(2,3)-Sudoku Pair Puzzle";
+
+    btn0.onclick = () => {
+        update(0 + 48, selectedIndex);
+    }
 
     btn1.onclick = () => {
         update(1 + 48, selectedIndex);
