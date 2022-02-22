@@ -249,7 +249,7 @@ window.onload = () => {
     let newButton = document.getElementById('btnNew');
     let checkButton = document.getElementById('btnCheck');
     let checkProgress = document.getElementById('btnCheckProgress')
-    // let clearButton = document.getElementById('btnClear');
+    let clearButton = document.getElementById('btnClear');
     let tbodies = table.getElementsByTagName("tbody");
     caption = table.getElementsByTagName("caption")[0];
     
@@ -366,26 +366,27 @@ window.onload = () => {
         location.reload(); 
     }
 
-    // clearButton.onclick = () => {
-    //     for (let tbody of tbodies) {
-    //         let trs = tbody.getElementsByTagName("tr");
-    //         for (let tr of trs) {
-    //             let tds = tr.getElementsByTagName("td");
-    //             for (let td of tds) {
-    //                 if ('123456'.indexOf(vals[index]) > -1) {
-    //                     td.innerText = vals[index];
-    //                     td.style.fontWeight = "bold";
-    //                     values.push(parseInt(td.innerText));
-    //                     defaultValues.push(parseInt(td.innerText));
-    //                 } else {
-    //                     update(0 + 48, selectedIndex);
-    //                 }
-    //                 cells.push(td);
-    //                 index++;
-    //             }
-    //         }
-    //     }
-    // }
+    clearButton.onclick = () => {
+        for (let tbody of tbodies) {
+            let trs = tbody.getElementsByTagName("tr");
+            for (let tr of trs) {
+                let tds = tr.getElementsByTagName("td");
+                for (let td of tds) {
+                    if ('123456'.indexOf(vals[index]) > -1) {
+                        td.innerText = vals[index];
+                        td.style.fontWeight = "bold";
+                        values.push(parseInt(td.innerText));
+                        defaultValues.push(parseInt(td.innerText));
+                    } else {
+                        update(0 + 48, index);
+                        cells[index].style.backgroundColor = 'white';
+                    }
+                    cells.push(td);
+                    index++;
+                }
+            }
+        }
+    }
 
 
     for (let i = 0; i < cells.length; i++)
