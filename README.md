@@ -8,6 +8,10 @@ This is my first attempt at making a webapp for the Sudoku Pair Latin Square Puz
 
 In particular, [This base](https://code.sololearn.com/W79O0WXwGD4j/?ref=app) was the starting point for this project
 
+## Implementation
+
+This code is implemented at [James Hammer's Academic Page](http://www2.cedarcrest.edu/academic/math/jmhammer/SudokuWebapp/23SPLS/)
+
 ## Refernces for SPLS
 
 This is the brain child of Dr. James Hammer and Dr. Dean Hoffman.  James Hammer wrote his dissertation on a generalization of these puzzles called [Factor Pair Latin Squares](http://hdl.handle.net/10415/4555).  More recently, Dr. Braxton Carrigan, Dr. John Lorch, and Dr. Catilin Owens have joined the crew to investigate both multi-pair latin squares as well as Sudoku pair Latin square.  A list of these publications in no particular order are:
