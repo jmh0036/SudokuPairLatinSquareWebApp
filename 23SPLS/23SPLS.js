@@ -248,6 +248,7 @@ window.onload = () => {
     let redoButton = document.getElementById('btnRedo');
     let newButton = document.getElementById('btnNew');
     let checkButton = document.getElementById('btnCheck');
+    let checkProgress = document.getElementById('btnCheckProgress')
     // let clearButton = document.getElementById('btnClear');
     let tbodies = table.getElementsByTagName("tbody");
     caption = table.getElementsByTagName("caption")[0];
@@ -326,6 +327,31 @@ window.onload = () => {
             alert("You have one or more mistake in this puzzle.");
         } else {
             alert("Congratulations! Wanna try another one?!");
+        }
+        ProblemFlag = 0;
+    }
+
+    checkProgress.onclick = () => {
+        let index = 0;
+        let ProblemFlag = 0;
+        for (let tbody of tbodies) {
+            let trs = tbody.getElementsByTagName("tr");
+            for (let tr of trs) {
+                let tds = tr.getElementsByTagName("td");
+                for (let td of tds) {
+                    cells.push(td);
+                    if ((sudoku.values[index] !== 0) && (sudoku.values[index] !== answer[index])) {
+                        ProblemFlag = 1;
+                    }
+                    index++;
+                }
+            }
+        }
+
+        if (ProblemFlag === 1) {
+            alert("You have one or more mistake in this puzzle.");
+        } else {
+            alert("So far so good.  Keep up the good work!");
         }
         ProblemFlag = 0;
     }
