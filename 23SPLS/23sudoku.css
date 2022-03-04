@@ -69,6 +69,12 @@ td {
     padding: 0;
 }
 
-.dash {
+.vdash {
+    border-left: dashed medium;
+    height: 500px;
+}
+
+.hdash {
     border: dashed medium;
+    border-collapse: collapse;
 }

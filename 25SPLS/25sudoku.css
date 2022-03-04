@@ -75,7 +75,7 @@ td {
 
 .vdash {
     border-left: dashed medium;
-    /* height: 500px; */
+    height: 500px;
 }
 
 .hdash {
