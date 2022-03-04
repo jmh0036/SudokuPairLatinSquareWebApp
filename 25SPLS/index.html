@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>(2,5)-Sudoku Pair Puzzle</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="25sudoku.css">
+</head>
+
+<body>
+    <div id="game">
+        <table class="demoWrapper">
+            <caption>Loading...</caption>
+            <colgroup>
+                <col>
+                <col>
+                <col class="vdash">
+                <col>
+                <col class = "vdash">
+            </colgroup>
+            <colgroup>
+                <col>
+                <col class = "vdash">
+                <col>
+                <col class = "vdash">
+                <col>
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr class = "hdash">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table><br />
+
+        <!-- <input id="tbInput" type="text" /> -->
+
+        <div id="VirtualKey">
+            <input id="btn1" type="button" value="1" onclick="input(this);" />
+            <input id="btn2" type="button" value="2" onclick="input(this);" />
+            <input id="btn3" type="button" value="3" onclick="input(this);" />
+            <input id="btn4" type="button" value="4" onclick="input(this);" />
+            <input id="btn5" type="button" value="5" onclick="input(this);" />
+            <br />
+            <input id="btn6" type="button" value="6" onclick="input(this);" />
+            <input id="btn7" type="button" value="7" onclick="input(this);" />
+            <input id="btn8" type="button" value="8" onclick="input(this);" />
+            <input id="btn9" type="button" value="9" onclick="input(this);" />
+            <input id="btn10" type="button" value="10" onclick="input(this)" /> <br />
+            <input id="btn0" type="button" value="Clear Cell" onclick="input(this);" />
+            <!-- <input id="btnDel" type="button" value="Backspace" onclick="del();" /> -->
+        </div>
+
+        <br />
+
+        <input type="button" id='btnCheckProgress' value="Check Filled" />
+        <input type="button" id='btnCheck' value="Check All" /><br />
+        <input type="button" id='btnSolve' value="Solve" />
+        <input type="button" id='btnNew' value="New" /> <br />
+        <input type="button" id='btnUndo' value="Undo" />
+        <input type="button" id='btnRedo' value="Redo" />
+        <input type="button" id='btnClear' value="Clear" />
+
+        <br />
+
+        <h2>Rules:</h2>
+        <ul>
+            <li>Every row must have integers 1 through 10 exactly once</li>
+            <li>Every column must have integers 1 through 10 exactly once</li>
+            <li>Each bold 2 by 5 rectangle must have integers 1 through 10 exactly once</li>
+            <li>Each dotted 5 by 2 rectangle must have integers 1 through 10 exactly once</li>
+        </ul> 
+        <br />
+    </div>
+    
+     <script src="25SPLS.js"></script>
+     <script src='25SPLS.js'></script>
+</body>
+</html>
