@@ -321,6 +321,7 @@ window.onload = () => {
     index = 0
     solveButton.onclick = () => {
         document.getElementById("btnCheck").disabled = true;
+        document.getElementById("btnCheckProgress").disabled = true;
 
         index = 0
         for (let tbody of tbodies) {

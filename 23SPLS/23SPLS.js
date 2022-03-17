@@ -277,7 +277,7 @@ window.onload = () => {
     let vals = puzzles[puzzleindex][0];
     let answer = puzzles[puzzleindex][1];
     let index = 0;
-    
+
     for (let tbody of tbodies) {
         let trs = tbody.getElementsByTagName("tr");
         for (let tr of trs) {
@@ -303,6 +303,7 @@ window.onload = () => {
     index = 0
     solveButton.onclick = () => {
         document.getElementById("btnCheck").disabled = true;
+        document.getElementById("btnCheckProgress").disabled = true;
 
         index = 0
         for (let tbody of tbodies) {
