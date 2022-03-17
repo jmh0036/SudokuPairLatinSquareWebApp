@@ -320,6 +320,8 @@ window.onload = () => {
 
     index = 0
     solveButton.onclick = () => {
+        document.getElementById("btnCheck").disabled = true;
+
         index = 0
         for (let tbody of tbodies) {
             let trs = tbody.getElementsByTagName("tr");
