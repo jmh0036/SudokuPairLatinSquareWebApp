@@ -322,6 +322,20 @@ window.onload = () => {
     solveButton.onclick = () => {
         document.getElementById("btnCheck").disabled = true;
         document.getElementById("btnCheckProgress").disabled = true;
+        document.getElementById("btnUndo").disabled = true;
+        document.getElementById("btnRedo").disabled = true;
+        document.getElementById("btnClear").disabled = true;
+        document.getElementById("btn0").disabled = true;
+        document.getElementById("btn1").disabled = true;
+        document.getElementById("btn2").disabled = true;
+        document.getElementById("btn3").disabled = true;
+        document.getElementById("btn4").disabled = true;
+        document.getElementById("btn5").disabled = true;
+        document.getElementById("btn6").disabled = true;
+        document.getElementById("btn7").disabled = true;
+        document.getElementById("btn8").disabled = true;
+        document.getElementById("btn9").disabled = true;
+        document.getElementById("btn10").disabled = true;
 
         index = 0
         for (let tbody of tbodies) {
